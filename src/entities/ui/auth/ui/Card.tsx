@@ -1,5 +1,6 @@
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia} from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { memo } from "react";
 interface ICardProps {
     name: string,
     description: string,
@@ -7,7 +8,7 @@ interface ICardProps {
     img: string
 }
 
-export const CardItem:React.FC<ICardProps> = ({name, description, price, img}) => {
+export const CardItem:React.FC<ICardProps> = memo(({name, description, price, img}) => {
     return (
         <Box>
             <Card sx={{ maxWidth: {sm: 400, xs: 300} }}>
@@ -42,4 +43,4 @@ export const CardItem:React.FC<ICardProps> = ({name, description, price, img}) =
         </Box>
         
     );
-};
+})

@@ -8,6 +8,8 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../../../app/firebase";
 import { styles } from "../styles";
 import { StyledBadge } from "../lib/StyledBadge";
+import { useNavigate } from "react-router-dom";
+import { MAIN_PAGE, MENU_PAGE } from "../../../../app/routes";
 
 export const Header = () => {
     const stylesButton = {
@@ -18,6 +20,7 @@ export const Header = () => {
     }
     const [isAuth, setIsAuth] = useState(false)
     const [open, setOpen] = useState(false);
+    const navigate = useNavigate()
 
     function handleClose(_event: React.SyntheticEvent | Event, reason?: string) {
         if (reason === 'clickaway') {
@@ -62,12 +65,19 @@ export const Header = () => {
                     <Box className="checkbox-box" sx={styles.box}>
                         <List sx={{display: {sm: 'flex', xs: 'block'}}}>
                             <ListItem>
-                                <Button variant="text" sx={stylesButton} size="small">
+                                <Button 
+                                    variant="text" 
+                                    sx={stylesButton} 
+                                    size="small" 
+                                    onClick={()=>navigate(MAIN_PAGE)}>
                                     Главная
                                 </Button>
                             </ListItem>
                             {isAuth && <ListItem>
-                                <Button sx={{color: 'white'}} size="small">
+                                <Button 
+                                    sx={{color: 'white'}} 
+                                    size="small" 
+                                    onClick={()=>navigate(MENU_PAGE)}>
                                     Меню
                                 </Button>
                             </ListItem>}
@@ -77,7 +87,10 @@ export const Header = () => {
                                         <ShoppingCartIcon />
                                     </StyledBadge>
                                 </IconButton>
-                                <Button variant="text" sx={{...stylesButton, display: {xs: 'block', sm: 'none'}}} size="small">
+                                <Button 
+                                    variant="text" 
+                                    sx={{...stylesButton, display: {xs: 'block', sm: 'none'}}} 
+                                    size="small">
                                     Корзина
                                 </Button>
                             </ListItem>
