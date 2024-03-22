@@ -9,7 +9,7 @@ import { auth } from "../../../../app/firebase";
 import { styles } from "../styles";
 import { StyledBadge } from "../lib/StyledBadge";
 import { useNavigate } from "react-router-dom";
-import { MAIN_PAGE, MENU_PAGE } from "../../../../app/routes";
+import { CART_PAGE, MAIN_PAGE, MENU_PAGE } from "../../../../app/routes";
 
 export const Header = () => {
     const stylesButton = {
@@ -90,7 +90,8 @@ export const Header = () => {
                                 <Button 
                                     variant="text" 
                                     sx={{...stylesButton, display: {xs: 'block', sm: 'none'}}} 
-                                    size="small">
+                                    size="small"
+                                    onClick={()=>navigate(CART_PAGE)}>
                                     Корзина
                                 </Button>
                             </ListItem>
