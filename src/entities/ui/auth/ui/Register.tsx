@@ -2,6 +2,8 @@ import { Button, Stack, TextField, Typography } from "@mui/material";
 import {useForm} from 'react-hook-form'
 import { IFormValuesRegister } from "../types";
 import { validateEmail, validatePassword } from "../lib/validationPatterns";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../../app/firebase";
 export const RegisterForm = () => {
     const form = useForm<IFormValuesRegister>({
         defaultValues: {
@@ -14,7 +16,14 @@ export const RegisterForm = () => {
     const {errors} = formState
     function onSubmit(data:IFormValuesRegister){
         console.log(data);
-        
+        createUserWithEmailAndPassword(auth, data.email, data.password)
+            .then((user)=>{
+                console.log(user)
+            }).catch(
+                (err)=> {
+                    console.log(err);
+                }
+            )
     }
     
     console.log('Register render');
@@ -26,8 +35,7 @@ export const RegisterForm = () => {
                 <Typography variant="h5" component="h5">
                     Register
                 </Typography>
-                <Stack spacing={2} width={400}>
-                
+                <Stack spacing={2} width={300}>
                     <TextField 
                         label={'email'} 
                         type="email" 

@@ -10,7 +10,7 @@ export const FormsAuth = () => {
         setWhatForm(form)
     }
     return (
-        <Grid container gap={5} columns={2} alignItems={'center'} justifyContent={'center'} sx={{paddingTop: '1rem'}} >
+        <Grid container gap={5} columns={2} flexDirection={'column'} alignItems={'center'} justifyContent={'center'} sx={{paddingTop: '1rem'}} >
             <Grid item>
                 <Button 
                     variant="contained" 

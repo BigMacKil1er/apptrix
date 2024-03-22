@@ -1,42 +1,13 @@
-import { AppBar, Box, Button, Checkbox, Grid, List, ListItem, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, Checkbox, Grid, List, ListItem, Snackbar, Toolbar, Typography} from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-
-const styles = {
-    checkbox: { 
-        mr: 2, 
-        display: { sm: 'none' }, 
-        '&.Mui-checked': {
-            color: 'white',
-            '& + .checkbox-box': {
-                opacity: 1,
-                transform: 'scale(1)'
-            }
-        } 
-    },
-    box: {
-        '@media (max-width: 600px)': {
-            width: '100%',
-            height: '100vh',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'absolute',
-            top: 60,
-            right: 0,
-            background: '#00000063',
-            opacity: 0,
-            transition: 'opacity 600ms',
-            transform: 'scale(0)',
-        },
-        '&.checked': {
-            opacity: 1,
-            transform: 'scale(1)'
-          }
-    }
-}
+import { useEffect, useState } from "react";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../../../../app/firebase";
+import { styles } from "../styles";
+import { StyledBadge } from "../lib/StyledBadge";
 
 export const Header = () => {
     const stylesButton = {
@@ -45,6 +16,35 @@ export const Header = () => {
             filter: 'blur(3px)'
         }
     }
+    const [isAuth, setIsAuth] = useState(false)
+    const [open, setOpen] = useState(false);
+
+    function handleClose(_event: React.SyntheticEvent | Event, reason?: string) {
+        if (reason === 'clickaway') {
+            return
+        }
+        setOpen(false)
+    }
+
+    function handleLogOut() {
+        signOut(auth).then((val)=>{
+            setIsAuth(false)
+            setOpen(true)
+            console.log(val, 'Вы вышли');
+        }).catch((error)=>{
+            console.log(error);
+        })
+    }
+
+    useEffect(()=>{
+        const hasAuth = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log(user);
+                setIsAuth(true)
+            }
+        })
+        return () => hasAuth()
+    },[])
     return (
         <Grid>
             <AppBar component="nav" position="static">
@@ -66,23 +66,40 @@ export const Header = () => {
                                     Главная
                                 </Button>
                             </ListItem>
-                            <ListItem>
+                            {isAuth && <ListItem>
                                 <Button sx={{color: 'white'}} size="small">
                                     Меню
                                 </Button>
-                            </ListItem>
+                            </ListItem>}
                             <ListItem>
                                 <IconButton sx={{display: {xs: 'none', sm: 'block'}}}>
-                                    <ShoppingCartIcon />
+                                    <StyledBadge badgeContent={4} color="secondary">
+                                        <ShoppingCartIcon />
+                                    </StyledBadge>
                                 </IconButton>
                                 <Button variant="text" sx={{...stylesButton, display: {xs: 'block', sm: 'none'}}} size="small">
                                     Корзина
                                 </Button>
                             </ListItem>
+                            {isAuth && <ListItem>
+                                <Button 
+                                    variant="text" 
+                                    sx={{...stylesButton}} 
+                                    size="small"
+                                    onClick={handleLogOut}>
+                                    LogOut
+                                </Button>
+                            </ListItem>}
                         </List>
                     </Box>
                 </Toolbar>
             </AppBar>
+            <Snackbar
+                open={open}
+                autoHideDuration={5000}
+                onClose={handleClose}
+                message="You're logged out"
+                />
         </Grid>
     );
 };

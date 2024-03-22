@@ -1,8 +1,13 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { Button, LinearProgress, Stack, TextField, Typography } from "@mui/material";
 import {useForm} from 'react-hook-form'
 import { IFormValues } from "../types";
 import { validateEmail, validatePassword } from "../lib/validationPatterns";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../../app/firebase";
+import { useState } from "react";
 export const LoginForm = () => {
+    const [errorMessage, setErrorMessage] = useState('')
+    const [isLoading, setIsloading] = useState(false)
     const form = useForm<IFormValues>({
         defaultValues: {
             email: '',
@@ -12,8 +17,19 @@ export const LoginForm = () => {
     const { register, handleSubmit, formState } = form
     const {errors} = formState
     function onSubmit(data:IFormValues){
-        console.log(data);
-        
+        setIsloading(true)
+        signInWithEmailAndPassword(auth, data.email, data.password)
+        .then((user)=>{
+            console.log(user)
+            setIsloading(false)
+            setErrorMessage('')
+        }).catch(
+            (err)=> {
+                console.log(err);
+                setIsloading(false)
+                setErrorMessage('incorrect login or password')
+            }
+        )
     }
     console.log('login render');
     
@@ -24,8 +40,12 @@ export const LoginForm = () => {
                     <Typography variant="h5" component="h5">
                         Login
                     </Typography>
-                    <Stack spacing={2} width={400}>
-                    
+                    <Stack spacing={2} width={300}>
+                        {errorMessage && 
+                            <Typography color='error'>
+                                {errorMessage}
+                            </Typography>}
+                        {isLoading && <LinearProgress color="secondary" />}
                         <TextField 
                             label={'email'} 
                             type="email" 
@@ -42,7 +62,7 @@ export const LoginForm = () => {
                             pattern: validatePassword})}
                             error={!!errors.password}
                             helperText={errors.password?.message}/>
-                        <Button type="submit" variant="contained">Login</Button>
+                        <Button type="submit" variant="contained" disabled={isLoading}>Login</Button>
                     </Stack>
                 </Stack>
                 
