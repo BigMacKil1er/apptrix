@@ -1,11 +1,9 @@
-import {Grid} from '@mui/material'
-import { Header } from '../../../../features/ui/header';
 import { MainContent } from '../../../../features/ui/content';
+import { Layout } from './Layout';
 export const MainPageLayout = () => {
     return (
-        <Grid>
-            <Header/>
-            <MainContent/>
-        </Grid>
+            <Layout>
+                <MainContent/>
+            </Layout>
     );
 };

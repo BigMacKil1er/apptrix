@@ -1,26 +1,33 @@
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia} from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { memo } from "react";
-interface ICardProps {
-    name: string,
-    description: string,
-    price: number,
-    img: string
-}
+import { memo} from "react";
+import { ICardProps } from "../../../../shared/types/item";
+import { useDispatch, useSelector } from "react-redux";
+import { checkPosition, setCartItems } from "../../../../app/store/data/cart_slice/cartSlice";
+import { CounterItems } from "./table_cart/model/CounterItems";
+import { UseControlItemCount } from "./table_cart/lib/UseControlItemCount";
+export const CardItem:React.FC<ICardProps> = memo((props) => {
+    const dispatch = useDispatch()
+    const cartData = useSelector(checkPosition)
+    const {handleIncreaseItemCount, handleDecreaseItemCount, currentItem} = UseControlItemCount(props)
+    function handleAddToCart() {
+        const array = [...cartData]
+        array.push({...props, count: 1})
+        dispatch(setCartItems({position: array}))
+    }
 
-export const CardItem:React.FC<ICardProps> = memo(({name, description, price, img}) => {
     return (
         <Box>
             <Card sx={{ maxWidth: {sm: 400, xs: 300} }}>
                 <CardMedia
                     component="img"
                     height="140"
-                    image={img}
-                    alt={name}
+                    image={props.img}
+                    alt={props.name}
                 />
                 <CardHeader
-                    title={name}
-                    subheader={price + '$'}
+                    title={props.name}
+                    subheader={props.price + '$'}
                 />
                 <CardContent>
                     <Accordion>
@@ -32,12 +39,15 @@ export const CardItem:React.FC<ICardProps> = memo(({name, description, price, im
                             Description
                         </AccordionSummary>
                         <AccordionDetails>
-                            {description}
+                            {props.description}
                         </AccordionDetails>
                     </Accordion>
                 </CardContent>
                 <CardActions>
-                    <Button size="small">add to cart</Button>
+                    {!currentItem ? 
+                        <Button size="small" onClick={handleAddToCart}>add to cart</Button> 
+                        : 
+                        <CounterItems count={currentItem?.count} handleIncreaseItemCount={handleIncreaseItemCount} handleDecreaseItemCount={handleDecreaseItemCount} />}
                 </CardActions>
             </Card>
         </Box>

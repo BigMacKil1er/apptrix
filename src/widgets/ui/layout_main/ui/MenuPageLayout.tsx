@@ -1,11 +1,9 @@
-import {Grid} from '@mui/material'
-import { Header } from '../../../../features/ui/header';
 import { MenuList } from '../../../../features/ui/content';
+import { Layout } from './Layout';
 export const MenuPageLayout = () => {
     return (
-        <Grid>
-            <Header/>
+        <Layout>
             <MenuList/>
-        </Grid>
+        </Layout>
     );
 };
