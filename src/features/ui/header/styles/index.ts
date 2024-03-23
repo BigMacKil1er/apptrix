@@ -32,5 +32,6 @@ export const styles = {
             opacity: 1,
             transform: 'scale(1)'
           }
-    }
+    },
+    listItem: {display: 'flex', justifyContent: 'center'}
 }

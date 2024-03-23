@@ -3,11 +3,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch, useSelector } from "react-redux";
 import { checkPosition, setCartItems } from "../../../../../../app/store/data/cart_slice/cartSlice";
 import { Dispatch, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 interface EnhancedTableToolbarProps {
     selected: readonly number[]
     setSelected: Dispatch<SetStateAction<readonly number[]>>
   }
 export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
+    const {t} = useTranslation()
     const { selected, setSelected } = props;
     const numSelected = selected.length
     const cartData = useSelector(checkPosition)
@@ -35,7 +37,7 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                 variant="subtitle1"
                 component="div"
             >
-                {numSelected} selected
+                {t('main.cart.table_order.selected', {count: numSelected})}
             </Typography>
             ) : (
             <Typography
@@ -44,7 +46,7 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                 id="tableTitle"
                 component="div"
             >
-                Your orders
+                {t('main.cart.table_order.title')}
             </Typography>
             )}
             {numSelected > 0 && (

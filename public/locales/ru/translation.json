@@ -1,0 +1,63 @@
+{
+    "main": {
+        "title": "Тестовое",
+        "navigation": {
+            "log_in": "Вход",
+            "menu": "Меню",
+            "logout": "Выход"
+        },
+        "notice": {
+            "logout":"Вы вышли из системы",
+            "log_in_err_auth": "неправильный логин или пароль",
+            "email_required": "Электронная почта обязательна",
+            "password_required": "Пароль обязателен",
+            "confirm_password_required": "Требуется подтверждение пароля",
+            "passwords_not_match": "Пароли не совпадают",
+            "empty_products": "Продукты отсутствуют",
+            "address_required": "Адрес обязателен",
+            "payment_required": "Способ оплаты обязателен",
+            "success_order": "Заказ успешно создан, идентификатор заказа: {{id}}"
+        },
+        "auth": {
+            "sign-in": "Вход",
+            "sign-up": "Регистрация",
+            "log-out": "Выйти",
+            "field": {
+                "email": "Электронная почта",
+                "password": "Пароль",
+                "confirm_pass": "Подвердить пароль"
+            }
+        },
+        "menu": {
+            "add_to_cart": "В корзину"
+        },
+        "cart": {
+            "table_order": {
+                "title": "Ваш заказ",
+                "position": "Позиция",
+                "quantity": "Количество",
+                "price": "Цена",
+                "subtotal": "Итого",
+                "selected_one": "Выбран {{count}}",
+                "selected_other": "Выбраны {{count}}"
+            },
+            "table_history": {
+                "title": "История заказов",
+                "indentifier": "Идентификатор заказа",
+                "address": "Адрес",
+                "status": "Статус",
+                "price": "Цена"
+            },
+            "form": {
+                "payment": "Способ оплаты",
+                "address": "Адрес доставки",
+                "fields_payment": {
+                    "card": "Безналичная",
+                    "cash": "Наличные",
+                    "crypto": "Криптовалюта"
+                },
+                "button_order": "Оформить"
+            }
+        }
+    }
+}

@@ -7,6 +7,7 @@ import { checkPosition, setCartItems } from "../../../../../../app/store/data/ca
 import { QueryDocumentSnapshot, SnapshotOptions, collection, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../../../../../app/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { useTranslation } from "react-i18next";
 interface IFormOrderValues {
     payment: string,
     address: string,
@@ -15,6 +16,7 @@ interface IFormOrderValues {
     price: number
 }
 export const ControlForm: React.FC<{subtotal: number}> = ({subtotal}) => {
+    const {t} = useTranslation()
     const cartData = useSelector(checkPosition)
     const dispatch = useDispatch()
     const [paymentMethod, setPaymentMethod] = useState('')
@@ -90,23 +92,23 @@ export const ControlForm: React.FC<{subtotal: number}> = ({subtotal}) => {
         if (cartData.length !== 0) {
             setValue('order', cartData)
         } else {
-            setError('order', { type : 'custom' , message : 'No products available' })
+            setError('order', { type : 'custom' , message : t('main.notice.empty_products') })
         }
     },[cartData])
     return (
         <>
             <form action="" noValidate onSubmit={handleSubmit(submitData)}>
                 <FormControl sx={{ m: 1, minWidth: 120, display: 'flex', flexDirection: 'row', gap: '10px', paddingBottom: '10px' }} size="small">
-                    <InputLabel id="select-autowidth-label">Payment method</InputLabel>
+                    <InputLabel id="select-autowidth-label">{t('main.cart.form.payment')}</InputLabel>
                     <Select
                         sx={{width: '100%'}}
                         labelId="select-autowidth-label"
                         id="select-autowidth"
-                        label="Payment method"
+                        label={t('main.cart.form.payment')}
                         error={!!errors.payment?.message}
                         value={paymentMethod}
                         {...register('payment', {
-                            required: 'The address is required',
+                            required: t('main.notice.payment_required'),
                             onChange: (event)=> {
                                 setPaymentMethod(event.target.value)
                             }
@@ -115,17 +117,17 @@ export const ControlForm: React.FC<{subtotal: number}> = ({subtotal}) => {
                         <MenuItem value="">
                             <em>None</em>
                         </MenuItem>
-                        <MenuItem value={'card'}>Card</MenuItem>
-                        <MenuItem value={'cash'}>Cash</MenuItem>
-                        <MenuItem value={'cryptocurrency'}>Сryptocurrency</MenuItem>
+                        <MenuItem value={'card'}>{t('main.cart.form.fields_payment.card')}</MenuItem>
+                        <MenuItem value={'cash'}>{t('main.cart.form.fields_payment.cash')}</MenuItem>
+                        <MenuItem value={'cryptocurrency'}>{t('main.cart.form.fields_payment.crypto')}</MenuItem>
                     </Select>
                     
                     <TextField 
                         error={!!errors.address?.message}
-                        label={'delivery address'} {...register('address', {
-                        required: 'The address is required',
+                        label={t('main.cart.form.address')} {...register('address', {
+                        required: t('main.notice.address_required'),
                     })}/>
-                    <Button type='submit'>order</Button>
+                    <Button type='submit'>{t('main.cart.form.button_order')}</Button>
                 </FormControl>
                 
                 <FormHelperText error={!isValid}>{errors.order?.message || errors.payment?.message || errors.address?.message}</FormHelperText>
@@ -134,7 +136,7 @@ export const ControlForm: React.FC<{subtotal: number}> = ({subtotal}) => {
                 open={open}
                 autoHideDuration={10000}
                 onClose={handleClose}
-                message={`Order successfully created, order identifier ${orderId.current}`}
+                message={t('main.notice.success_order', { id: orderId.current})}
                 />
 
             <Backdrop

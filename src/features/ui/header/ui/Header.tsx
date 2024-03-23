@@ -12,6 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { CART_PAGE, MAIN_PAGE, MENU_PAGE } from "../../../../app/routes";
 import { useSelector } from "react-redux";
 import { checkPosition } from "../../../../app/store/data/cart_slice/cartSlice";
+import { useTranslation } from "react-i18next";
+import { SwitchLocale } from "../../../../entities/ui/switch_locale/SwitchLocale";
 
 export const Header = () => {
     const stylesButton = {
@@ -20,6 +22,8 @@ export const Header = () => {
             filter: 'blur(3px)'
         }
     }
+
+    const {t} = useTranslation()
     const [isAuth, setIsAuth] = useState(false)
     const [open, setOpen] = useState(false);
     const navigate = useNavigate()
@@ -57,45 +61,49 @@ export const Header = () => {
                         variant="h6"
                         component="div"
                         sx={{ flexGrow: 1 }}>
-                            TEST TASK
+                            {t('main.title')}
                     </Typography>
                     <Checkbox sx={styles.checkbox} 
                         inputProps={{ 'aria-label': 'controlled' }} 
                         icon={<MenuIcon />} 
                         checkedIcon={<MenuOpenIcon />}/>
                     <Box className="checkbox-box" sx={styles.box}>
+                        
                         <List sx={{display: {sm: 'flex', xs: 'block'}}}>
-                            <ListItem>
+                            <ListItem sx={styles.listItem}>
+                                <SwitchLocale/>
+                            </ListItem>
+                            <ListItem sx={styles.listItem}>
                                 <Button 
                                     variant="text" 
                                     sx={stylesButton} 
                                     size="small" 
                                     onClick={()=>navigate(MAIN_PAGE)}>
-                                    log-in
+                                    {t('main.navigation.log_in')}
                                 </Button>
                             </ListItem>
-                            {isAuth && <ListItem>
+                            {isAuth && <ListItem sx={styles.listItem}>
                                 <Button 
                                     sx={{color: 'white'}} 
                                     size="small" 
                                     onClick={()=>navigate(MENU_PAGE)}>
-                                    Menu
+                                    {t('main.navigation.menu')}
                                 </Button>
                             </ListItem>}
-                            <ListItem sx={{display: 'flex', justifyContent: 'center'}}>
+                            <ListItem sx={styles.listItem}>
                                 <IconButton  onClick={()=>navigate(CART_PAGE)}>
                                     <StyledBadge badgeContent={cartCount} color="secondary">
                                         <ShoppingCartIcon />
                                     </StyledBadge>
                                 </IconButton>
                             </ListItem>
-                            {isAuth && <ListItem>
+                            {isAuth && <ListItem sx={styles.listItem}>
                                 <Button 
                                     variant="text" 
                                     sx={{...stylesButton}} 
                                     size="small"
                                     onClick={handleLogOut}>
-                                    LogOut
+                                    {t('main.navigation.logout')}
                                 </Button>
                             </ListItem>}
                         </List>
