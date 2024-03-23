@@ -1,4 +1,5 @@
 import { Checkbox, TableCell, TableHead, TableRow } from "@mui/material";
+import { useTranslation } from "react-i18next";
 interface EnhancedTableProps {
     numSelected: number;
     onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -7,6 +8,7 @@ interface EnhancedTableProps {
   }
   export const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {
     const { onSelectAllClick, numSelected, rowCount } = props
+    const {t} = useTranslation()
     return (
         <TableHead>
             <TableRow>
@@ -21,9 +23,9 @@ interface EnhancedTableProps {
                         }}
                     />
                 </TableCell>
-                <TableCell>Position</TableCell>
-                <TableCell>Quantity</TableCell>
-                <TableCell>Price</TableCell>
+                <TableCell>{t('main.cart.table_order.position')}</TableCell>
+                <TableCell>{t('main.cart.table_order.quantity')}</TableCell>
+                <TableCell>{t('main.cart.table_order.price')}</TableCell>
             </TableRow>
         </TableHead>
     );

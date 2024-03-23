@@ -7,7 +7,9 @@ import { auth } from "../../../../app/firebase";
 import { useIsLoading } from "./table_cart/lib/UseIsLoading";
 import { useNavigate } from "react-router-dom";
 import { MENU_PAGE } from "../../../../app/routes";
+import { useTranslation } from "react-i18next";
 export const RegisterForm = () => {
+    const {t} = useTranslation()
     const {isLoading, setIsloading} = useIsLoading()
     const navigate = useNavigate()
     const form = useForm<IFormValuesRegister>({
@@ -38,38 +40,38 @@ export const RegisterForm = () => {
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <Stack spacing={2} alignItems={'center'}>
                 <Typography variant="h5" component="h5">
-                    Register
+                    {t('main.auth.sign-up')}
                 </Typography>
                 <Stack spacing={2} width={300}>
                     {isLoading && <LinearProgress color="secondary" />}
                     <TextField 
-                        label={'email'} 
+                        label={t('main.auth.field.email')} 
                         type="email" 
                         required={true} 
-                        {...register("email", {required: 'Email is required',
+                        {...register("email", {required: t('main.notice.email_required'),
                         pattern: validateEmail})}
                         error={!!errors.email}
                         helperText={errors.email?.message}/>
                     <TextField 
-                        label={'password'} 
+                        label={t('main.auth.field.password')} 
                         type="password" 
                         required={true} 
-                        {...register("password", {required: 'Password is required',
+                        {...register("password", {required: t('main.notice.password_required'),
                         pattern: validatePassword})}
                         error={!!errors.password}
                         helperText={errors.password?.message}/>
                     <TextField 
-                        label={'confirm password'} 
+                        label={t('main.auth.field.confirm_pass')} 
                         type="password" 
                         required={true} 
-                        {...register("confirmPassword", {required: 'Confirm Password is required',
+                        {...register("confirmPassword", {required: t('main.notice.confirm_password_required'),
                         validate: (value)=>{
                             const password = watch("password")
-                            return value === password || 'Entered passwords do not match'
+                            return value === password || t('main.notice.passwords_not_match')
                         } })}
                         error={!!errors.confirmPassword}
                         helperText={errors.confirmPassword?.message}/>
-                    <Button type="submit" variant="contained">Register</Button>
+                    <Button type="submit" variant="contained">{t('main.auth.sign-up')}</Button>
                 </Stack>
             </Stack>
             </form>

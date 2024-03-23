@@ -1,0 +1,63 @@
+{
+    "main": {
+        "title": "Test",
+        "navigation": {
+            "log_in": "Login",
+            "menu": "Menu",
+            "logout": "Logout"
+        },
+        "notice": {
+            "logout":"You are logged out",
+            "log_in_err_auth": "incorrect login or password",
+            "email_required": "Email is required",
+            "password_required": "Password required",
+            "confirm_password_required": "Password confirmation required",
+            "passwords_not_match": "Passwords do not match",
+            "empty_products": "There are no products available",
+            "address_required": "Address required",
+            "payment_required": "Payment method is required",
+            "success_order": "Order successfully created, order ID: {{id}}"
+        },
+        "auth": {
+            "sign-in": "Login",
+            "sign-up": "Registration",
+            "log-out": "Log out",
+            "field": {
+                "email": "Email",
+                "password": "Password",
+                "confirm_pass": "Confirm password"
+            }
+        },
+        "menu": {
+            "add_to_cart": "Add to cart"
+        },
+        "cart": {
+            "table_order": {
+                "title": "Your order",
+                "position": "Position",
+                "quantity": "Quantity",
+                "price": "Price",
+                "subtotal": "Total",
+                "selected_one": "{{count}} selected",
+                "selected_other": "{{count}} selected"
+            },
+            "table_history": {
+                "title": "Order History",
+                "indentifier": "Order ID",
+                "address": "Address",
+                "status": "Status",
+                "price": "Price"
+            },
+            "form": {
+                "payment": "Payment method",
+                "address": "Delivery address",
+                "fields_payment": {
+                    "card": "Cashless",
+                    "cash": "Cash",
+                    "crypto": "Cryptocurrency"
+                },
+                "button_order": "Checkout"
+            }
+        }
+    }
+}

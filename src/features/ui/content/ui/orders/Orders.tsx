@@ -4,7 +4,9 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
 import { auth, db } from "../../../../../app/firebase";
 import { listItems } from "../../../../types";
+import { useTranslation } from "react-i18next";
 export const Orders = () => {
+    const {t} = useTranslation()
     const [listItems, setListItems] = useState<listItems[]>([])
     const getItems = useCallback(()=>{
         const dishesCollection = collection(db, 'orders')
@@ -34,16 +36,16 @@ export const Orders = () => {
     return (
         <Box>
                 <Toolbar>
-                    <Typography>History orders</Typography>
+                    <Typography>{t('main.cart.table_history.title')}</Typography>
                 </Toolbar>
                 <TableContainer component={Paper} sx={{maxWidth: '1000px'}}>
                     <Table aria-label="simple table">
                         <TableHead>
                         <TableRow>
-                            <TableCell>Order identifier</TableCell>
-                            <TableCell align="right">Address</TableCell>
-                            <TableCell align="right">Status</TableCell>
-                            <TableCell align="right">Price</TableCell>
+                            <TableCell>{t('main.cart.table_history.indentifier')}</TableCell>
+                            <TableCell align="right">{t('main.cart.table_history.address')}</TableCell>
+                            <TableCell align="right">{t('main.cart.table_history.status')}</TableCell>
+                            <TableCell align="right">{t('main.cart.table_history.price')}</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>
