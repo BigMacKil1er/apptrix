@@ -122,7 +122,6 @@ export const ControlForm: React.FC<{subtotal: number}> = ({subtotal}) => {
                     
                     <TextField 
                         error={!!errors.address?.message}
-                        x={{width: '100%'}} 
                         label={'delivery address'} {...register('address', {
                         required: 'The address is required',
                     })}/>
