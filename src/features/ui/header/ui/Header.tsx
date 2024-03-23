@@ -10,6 +10,8 @@ import { styles } from "../styles";
 import { StyledBadge } from "../lib/StyledBadge";
 import { useNavigate } from "react-router-dom";
 import { CART_PAGE, MAIN_PAGE, MENU_PAGE } from "../../../../app/routes";
+import { useSelector } from "react-redux";
+import { checkPosition } from "../../../../app/store/data/cart_slice/cartSlice";
 
 export const Header = () => {
     const stylesButton = {
@@ -21,7 +23,7 @@ export const Header = () => {
     const [isAuth, setIsAuth] = useState(false)
     const [open, setOpen] = useState(false);
     const navigate = useNavigate()
-
+    const cartCount = useSelector(checkPosition).length
     function handleClose(_event: React.SyntheticEvent | Event, reason?: string) {
         if (reason === 'clickaway') {
             return
@@ -30,10 +32,10 @@ export const Header = () => {
     }
 
     function handleLogOut() {
-        signOut(auth).then((val)=>{
+        signOut(auth).then(()=>{
             setIsAuth(false)
             setOpen(true)
-            console.log(val, 'Вы вышли');
+            navigate(MAIN_PAGE)
         }).catch((error)=>{
             console.log(error);
         })
@@ -42,7 +44,6 @@ export const Header = () => {
     useEffect(()=>{
         const hasAuth = onAuthStateChanged(auth, (user) => {
             if (user) {
-                console.log(user);
                 setIsAuth(true)
             }
         })
@@ -70,7 +71,7 @@ export const Header = () => {
                                     sx={stylesButton} 
                                     size="small" 
                                     onClick={()=>navigate(MAIN_PAGE)}>
-                                    Главная
+                                    log-in
                                 </Button>
                             </ListItem>
                             {isAuth && <ListItem>
@@ -78,22 +79,15 @@ export const Header = () => {
                                     sx={{color: 'white'}} 
                                     size="small" 
                                     onClick={()=>navigate(MENU_PAGE)}>
-                                    Меню
+                                    Menu
                                 </Button>
                             </ListItem>}
-                            <ListItem>
-                                <IconButton sx={{display: {xs: 'none', sm: 'block'}}}>
-                                    <StyledBadge badgeContent={4} color="secondary">
+                            <ListItem sx={{display: 'flex', justifyContent: 'center'}}>
+                                <IconButton  onClick={()=>navigate(CART_PAGE)}>
+                                    <StyledBadge badgeContent={cartCount} color="secondary">
                                         <ShoppingCartIcon />
                                     </StyledBadge>
                                 </IconButton>
-                                <Button 
-                                    variant="text" 
-                                    sx={{...stylesButton, display: {xs: 'block', sm: 'none'}}} 
-                                    size="small"
-                                    onClick={()=>navigate(CART_PAGE)}>
-                                    Корзина
-                                </Button>
                             </ListItem>
                             {isAuth && <ListItem>
                                 <Button 

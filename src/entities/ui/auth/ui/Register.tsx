@@ -1,10 +1,15 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { Button, LinearProgress, Stack, TextField, Typography } from "@mui/material";
 import {useForm} from 'react-hook-form'
 import { IFormValuesRegister } from "../types";
 import { validateEmail, validatePassword } from "../lib/validationPatterns";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../../app/firebase";
+import { useIsLoading } from "./table_cart/lib/UseIsLoading";
+import { useNavigate } from "react-router-dom";
+import { MENU_PAGE } from "../../../../app/routes";
 export const RegisterForm = () => {
+    const {isLoading, setIsloading} = useIsLoading()
+    const navigate = useNavigate()
     const form = useForm<IFormValuesRegister>({
         defaultValues: {
             email: '',
@@ -15,19 +20,19 @@ export const RegisterForm = () => {
     const { register, handleSubmit, watch, formState } = form
     const {errors} = formState
     function onSubmit(data:IFormValuesRegister){
-        console.log(data);
+        setIsloading(true)
         createUserWithEmailAndPassword(auth, data.email, data.password)
-            .then((user)=>{
-                console.log(user)
+            .then(()=>{
+                navigate(MENU_PAGE)
             }).catch(
                 (err)=> {
                     console.log(err);
                 }
-            )
+            ).finally(()=>{
+                setIsloading(false)
+            })
     }
     
-    console.log('Register render');
-
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -36,6 +41,7 @@ export const RegisterForm = () => {
                     Register
                 </Typography>
                 <Stack spacing={2} width={300}>
+                    {isLoading && <LinearProgress color="secondary" />}
                     <TextField 
                         label={'email'} 
                         type="email" 

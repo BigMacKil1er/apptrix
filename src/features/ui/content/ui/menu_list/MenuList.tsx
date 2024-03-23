@@ -1,14 +1,13 @@
-import { Box, CircularProgress, Grid } from "@mui/material";
+import { Backdrop, Box, CircularProgress, Grid, Theme } from "@mui/material";
 import {DocumentData, QueryDocumentSnapshot, collection, getDocs, limit, query, startAfter} from 'firebase/firestore'
 import { db } from "../../../../../app/firebase";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CardItem } from "../../../../../entities/ui/auth/ui/Card";
+import { listItems } from "../../../../types";
+import { useIsLoading } from "../../../../../entities/ui/auth/ui/table_cart/lib/UseIsLoading";
 
-type listItems = {
-    data: DocumentData;
-    id: string;
-}
 export const MenuList = () => {
+    const {isLoading, setIsloading} = useIsLoading()
     const [listItems, setListItems] = useState<listItems[]>([])
     const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<DocumentData, DocumentData> | null>(null);
     
@@ -16,6 +15,7 @@ export const MenuList = () => {
     const [isIntersecting, setIsIntersecting] = useState(false);
 
     const getItems = useCallback(()=>{
+        setIsloading(true)
         const dishesCollection = collection(db, 'products');
         const q = query(dishesCollection, limit(10));
         getDocs(q).then((response) => {
@@ -25,8 +25,10 @@ export const MenuList = () => {
             setLastDoc(lastDoc1);
         }).catch((error) => {
             console.log(error);
-        });
-    },[setListItems, setLastDoc])
+        }).finally(()=>{
+            setIsloading(false)
+        })
+    },[setListItems, setLastDoc, setIsloading])
 
     const loadNextItems = useCallback(()=>{
         if (!lastDoc) return;
@@ -84,7 +86,12 @@ export const MenuList = () => {
             <Box ref={boxRef} sx={{ maxWidth: {sm: 400, xs: 300}, width: '100%', display: listItems.length > 0 ? 'flex' : 'none'}} marginBottom={2} alignItems={'center'} justifyContent={'center'}>
                 <CircularProgress />
             </Box>
-            
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme: Theme) => theme.zIndex.drawer + 1 }}
+                open={isLoading}
+                >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </Grid>
     );
 };

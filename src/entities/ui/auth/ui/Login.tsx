@@ -5,9 +5,13 @@ import { validateEmail, validatePassword } from "../lib/validationPatterns";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../../app/firebase";
 import { useState } from "react";
+import { useIsLoading } from "./table_cart/lib/UseIsLoading";
+import { useNavigate } from "react-router-dom";
+import { MENU_PAGE } from "../../../../app/routes";
 export const LoginForm = () => {
     const [errorMessage, setErrorMessage] = useState('')
-    const [isLoading, setIsloading] = useState(false)
+    const {isLoading, setIsloading} = useIsLoading()
+    const navigate = useNavigate()
     const form = useForm<IFormValues>({
         defaultValues: {
             email: '',
@@ -20,9 +24,10 @@ export const LoginForm = () => {
         setIsloading(true)
         signInWithEmailAndPassword(auth, data.email, data.password)
         .then((user)=>{
-            console.log(user)
+            console.log(user.user.uid)
             setIsloading(false)
             setErrorMessage('')
+            navigate(MENU_PAGE)
         }).catch(
             (err)=> {
                 console.log(err);
@@ -31,8 +36,6 @@ export const LoginForm = () => {
             }
         )
     }
-    console.log('login render');
-    
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>

@@ -1,13 +1,12 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
+import { Orders, TableCart } from "../../../../../entities/ui/auth";
 
 
 export const Cart = () => {
     return (
         <Grid>
-            {/* <Typography>
-                Your orders
-            </Typography> */}
-            {/* <TableCart/> */}
+            <TableCart/>
+            <Orders/>
         </Grid>
     );
 };
